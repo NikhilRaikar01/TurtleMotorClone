@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 class TurtlemintCloneApplicationTests {
 
     @Test
-    void contextLoads() {
+    void itShouldGenerateId() {
     }
 
 }
