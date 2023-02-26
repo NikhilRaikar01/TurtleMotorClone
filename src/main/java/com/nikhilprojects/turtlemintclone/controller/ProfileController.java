@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import com.nikhilprojects.turtlemintclone.exception.ResourceNotFoundException;
 import com.nikhilprojects.turtlemintclone.model.Profile;
 import com.nikhilprojects.turtlemintclone.repository.ProfileRepository;
+import com.nikhilprojects.turtlemintclone.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,19 +36,21 @@ public class ProfileController {
     @Autowired
     private SequenceGeneratorService sequenceGeneratorService;
 
+    @Autowired
+    private ProfileService profileService;
+
     @GetMapping("/profiles")
-    public List<Profile> getAllProfiles() {return profileRepository.findAll();}
+    public List<Profile> getAllProfiles() {return profileService.getAllProfiles();}
 
     @GetMapping("/profiles/{id}")
     public ResponseEntity<Profile> getProfileById(@PathVariable(value = "id") Long profileId)
             throws ResourceNotFoundException {
-        Profile profile = profileRepository.findById(profileId)
-                .orElseThrow(() -> new ResourceNotFoundException("Profile not found for this id :: " + profileId));
-        return ResponseEntity.ok().body(profile);
+        return profileService.getProfileById(profileId);
     }
 
     @PostMapping("/profiles")
-    public Profile createProfile(@Valid @RequestBody Profile profile) {
+    public Profile createProfile(@RequestBody Profile profile) {
+
         profile.setId(sequenceGeneratorService.generateSequence(Profile.SEQUENCE_NAME));
         return profileRepository.save(profile);
     }
