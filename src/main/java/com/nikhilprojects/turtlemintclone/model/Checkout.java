@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Data
-@Document(collection = "checkout3")
+@Document(collection = "checkout")
 @NoArgsConstructor
 public class Checkout {
     @Id

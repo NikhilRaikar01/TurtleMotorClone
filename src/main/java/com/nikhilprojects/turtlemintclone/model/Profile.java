@@ -19,16 +19,11 @@ public class Profile {
 	@Id
 	private long id;
 
-	@NotBlank
     @Size(max=100)
 	private String Vertical;
-	@NotBlank
-	@Size(max=100)
+
 	private String Make;
 
-	@NotBlank
-    @Size(max=100)
-    @Indexed(unique=true)
 	private String Model;
 
 	public Profile(String Vertical, String Make, String Model) {
