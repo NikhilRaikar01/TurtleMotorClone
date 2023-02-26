@@ -32,6 +32,7 @@ public class CheckoutService {
 
     public Optional<Checkout> getById(long id)
     {
+
         return checkoutRepository.findById(id);
     }
     public void deleteCheckout(Long checkoutId)

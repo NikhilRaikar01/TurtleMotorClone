@@ -3,6 +3,7 @@ package com.nikhilprojects.turtlemintclone.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -11,6 +12,7 @@ import com.nikhilprojects.turtlemintclone.model.Profile;
 import com.nikhilprojects.turtlemintclone.repository.ProfileRepository;
 import com.nikhilprojects.turtlemintclone.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.annotation.Id;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,16 +45,17 @@ public class ProfileController {
     public List<Profile> getAllProfiles() {return profileService.getAllProfiles();}
 
     @GetMapping("/profiles/{id}")
-    public ResponseEntity<Profile> getProfileById(@PathVariable(value = "id") Long profileId)
+    public ResponseEntity<Profile> getProfileById(Long profileId)
             throws ResourceNotFoundException {
-        return profileService.getProfileById(profileId);
+        Profile profile = profileRepository.findById(profileId)
+                .orElseThrow(() -> new ResourceNotFoundException("Profile not found for this id :: " + profileId));
+        return ResponseEntity.ok().body(profile);
     }
 
     @PostMapping("/profiles")
     public Profile createProfile(@RequestBody Profile profile) {
 
-        profile.setId(sequenceGeneratorService.generateSequence(Profile.SEQUENCE_NAME));
-        return profileRepository.save(profile);
+        return profileService.createProfile(profile);
     }
 
     @PutMapping("/profiles/{id}")

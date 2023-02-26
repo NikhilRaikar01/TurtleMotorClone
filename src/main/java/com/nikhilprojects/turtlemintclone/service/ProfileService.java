@@ -12,6 +12,7 @@ import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class ProfileService {
@@ -25,17 +26,17 @@ public class ProfileService {
         return profileRepository.findAll();}
 
     @GetMapping("/profiles/{id}")
-    public ResponseEntity<Profile> getProfileById(Long profileId)
-            throws ResourceNotFoundException {
-        Profile profile = profileRepository.findById(profileId)
-                .orElseThrow(() -> new ResourceNotFoundException("Profile not found for this id :: " + profileId));
-        return ResponseEntity.ok().body(profile);
+    public Optional<Profile> getProfileById(Long profileId)
+    {
+        Optional<Profile> profile = profileRepository.findById(profileId);
+        return profile;
     }
 
-//    @PostMapping("/profiles")
-//    public Profile createProfile(@RequestBody Profile profile) {
-//        profile.setId(sequenceGeneratorService.generateSequence(Profile.SEQUENCE_NAME));
-//        return profileRepository.save(profile);
-//    }
+    @PostMapping("/profiles")
+    public Profile createProfile(Profile profile) {
+        profile.setId(sequenceGeneratorService.generateSequence(Profile.SEQUENCE_NAME));
+        return profileRepository.save(profile);
+    }
+
 
 }

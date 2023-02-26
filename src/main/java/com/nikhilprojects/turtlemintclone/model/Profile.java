@@ -36,5 +36,7 @@ public class Profile {
 	public String toString() {
 		return "Profiles [id=" + id + ", Vertical=" + Vertical + ", Make=" + Make + ", Model" + Model
 				+ "]";
-	}	
+	}
+
+
 }
